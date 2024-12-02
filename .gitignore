@@ -1,0 +1,23 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Backup files
+*.bak
+*.tmp
+*.temp
+
+# Local development
+*.local
+.env

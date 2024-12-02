@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /assets/
+Disallow: /.git/
+Disallow: /.htaccess
+Disallow: /error_log
+Disallow: /cgi-bin/
+
+# Sitemap
+Sitemap: https://yourwebsite.com/sitemap.xml

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Placeholder Images</title>
+</head>
+<body>
+    <!-- Banner Image (1920x300) -->
+    <canvas id="bannerCanvas" width="1920" height="300"></canvas>
+    <a id="bannerDownload" download="banner.jpg">Download Banner</a>
+    
+    <br><br>
+    
+    <!-- Profile Image (400x400) -->
+    <canvas id="profileCanvas" width="400" height="400"></canvas>
+    <a id="profileDownload" download="profile.jpg">Download Profile</a>
+
+    <script>
+        // Banner Image
+        const bannerCanvas = document.getElementById('bannerCanvas');
+        const bannerCtx = bannerCanvas.getContext('2d');
+        bannerCtx.fillStyle = '#3498db';
+        bannerCtx.fillRect(0, 0, 1920, 300);
+        bannerCtx.font = '48px Arial';
+        bannerCtx.fillStyle = 'white';
+        bannerCtx.textAlign = 'center';
+        bannerCtx.fillText('Banner Image (1920x300)', 960, 160);
+        
+        // Profile Image
+        const profileCanvas = document.getElementById('profileCanvas');
+        const profileCtx = profileCanvas.getContext('2d');
+        profileCtx.fillStyle = '#2ecc71';
+        profileCtx.fillRect(0, 0, 400, 400);
+        profileCtx.beginPath();
+        profileCtx.arc(200, 200, 150, 0, Math.PI * 2);
+        profileCtx.fillStyle = '#27ae60';
+        profileCtx.fill();
+        profileCtx.font = '24px Arial';
+        profileCtx.fillStyle = 'white';
+        profileCtx.textAlign = 'center';
+        profileCtx.fillText('Profile', 200, 210);
+
+        // Set up downloads
+        document.getElementById('bannerDownload').href = bannerCanvas.toDataURL('image/jpeg');
+        document.getElementById('profileDownload').href = profileCanvas.toDataURL('image/jpeg');
+    </script>
+</body>
+</html>
