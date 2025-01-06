@@ -56,7 +56,7 @@
     <header class="hero" id="home">
         <div class="banner-container">
             <img src="assets/banner.jpg" alt="Banner" class="banner-img">
-            <img src="assets/profile.jpg?v=1" alt="Profile" class="profile-img">
+            <img src="assets/profile4.jpg" alt="Profile" class="profile-img">
         </div>
         <div class="info-container">
             <div class="name-social">
@@ -80,10 +80,55 @@
         <section id="projects" class="section">
             <h2>Featured Projects</h2>
             <div class="featured-grid">
-                <!-- Projects coming soon message -->
-                <p class="coming-soon">Exciting projects coming soon! Stay tuned...</p>
+                <div class="project-card" data-date="2025-01-04">
+                    <div class="project-media">
+                        <video autoplay loop muted playsinline>
+                            <source src="assets/Projects/Goodcabs_Dashboard/dash2.mp4" type="video/mp4">
+                        </video>
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Driving Data-Powered Success for GoodCabs</h3>
+                        <p class="project-date">January 04, 2025</p>
+                        <p class="project-description">
+                            Uncovered insights behind an 18% revenue surge using Power BI and SQL, optimizing trip patterns, passenger behavior, and EV opportunities. View the dashboard for real-world impact!
+                        </p>
+                        <div class="project-skills">
+                            <span class="skill-tag">PowerBI</span>
+                            <span class="skill-tag">SQL</span>
+                        </div>
+                        <div class="project-buttons">
+                            <a href="https://app.powerbi.com/view?r=eyJrIjoiZWY4ZGQyZjgtODRkZC00MTEwLTg4ZTktZGM0NWFhNmZhYzcwIiwidCI6ImJmNjgxNTE0LWY3MTktNDUxNS04ZDYyLWY1NjEzN2U3ZWExNyJ9&pageName=2cea203174472c38d9f3" 
+                               class="view-project-btn"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View Dashboard
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <button class="view-presentation-btn" onclick="PDFModalManager.openModal()">
+                                View Presentation
+                                <i class="fas fa-file-pdf"></i>
+                            </button>
+                            <a href="https://github.com/amitsubhashchejara/Goodcabs_analysis" 
+                               class="view-github-btn"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                View Code
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
+
+        <!-- PDF Modal -->
+        <div id="presentationModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <embed src="assets/Projects/Goodcabs_Dashboard/Goodcabs Presentation.pdf" type="application/pdf" width="100%" height="100%">
+            </div>
+        </div>
 
         <section id="articles" class="section">
             <div class="section-header">
@@ -96,6 +141,58 @@
                 </div>
             </div>
             <div class="articles-grid">
+                <a href="https://medium.com/@amitsubhashchejara/data-driven-success-enhancing-goodcabs-operations-with-insights-and-innovation-9d9f4be55288" 
+                   class="article-card" 
+                   data-date="2025-01-04"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <div class="article-image">
+                        <img src="assets/Medium articles/goodcabs_article.jpg" alt="GoodCabs Operations">
+                    </div>
+                    <div class="article-content">
+                        <h3>Data-Driven Success: Enhancing GoodCabs Operations with Insights and Innovation</h3>
+                        <p class="article-date">January 04, 2025</p>
+                    </div>
+                </a>
+                <a href="https://medium.com/@amitsubhashchejara/understanding-sql-query-execution-a-beginners-guide-c7cf17adb187" 
+                   class="article-card" 
+                   data-date="2024-12-26"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <div class="article-image">
+                        <img src="assets/Medium articles/sql_vs_python_begineer.jpg" alt="SQL Query Execution">
+                    </div>
+                    <div class="article-content">
+                        <h3>Understanding SQL Query Execution: A Beginner's Guide</h3>
+                        <p class="article-date">December 26, 2024</p>
+                    </div>
+                </a>
+                <a href="https://medium.com/@amitsubhashchejara/looking-to-set-up-your-postgresql-database-online-let-supabase-be-your-guide-86e3c33dba8d" 
+                   class="article-card" 
+                   data-date="2024-12-23"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <div class="article-image">
+                        <img src="assets/Medium articles/Supabase.jpg" alt="Supabase Guide">
+                    </div>
+                    <div class="article-content">
+                        <h3>🌟 Looking to Set Up Your PostgreSQL Database Online? Let Supabase Be Your Guide! 🌟</h3>
+                        <p class="article-date">December 23, 2024</p>
+                    </div>
+                </a>
+                <a href="https://medium.com/@amitsubhashchejara/linear-algebra-part-3-linear-dependencies-subspaces-and-basis-6bbcc8f3c9d6" 
+                   class="article-card" 
+                   data-date="2024-12-22"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <div class="article-image">
+                        <img src="assets/Medium articles/linalp3.jpg" alt="Linear Algebra Part 3">
+                    </div>
+                    <div class="article-content">
+                        <h3>Linear Algebra (Part-3): Linear Dependencies, Subspaces, and Basis</h3>
+                        <p class="article-date">December 22, 2024</p>
+                    </div>
+                </a>
                 <a href="https://medium.com/@amitsubhashchejara/linear-algebra-part-2-linear-combination-and-span-d5fe65ef0e8f" 
                    class="article-card" 
                    data-date="2024-08-04"

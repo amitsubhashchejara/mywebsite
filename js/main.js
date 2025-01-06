@@ -107,6 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
             this.sortSelect = document.getElementById('sort-articles');
             this.articlesGrid = document.querySelector('.articles-grid');
             this.loadMoreBtn = document.getElementById('load-more');
+            this.prevBtn = document.querySelector('.page-btn[data-page="prev"]');
+            this.nextBtn = document.querySelector('.page-btn[data-page="next"]');
+            this.currentPageSpan = document.querySelector('.current-page');
+            this.totalPagesSpan = document.querySelector('.total-pages');
             
             this.initializeArticles();
             this.setupEventListeners();
@@ -123,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     date: article.dataset.date || article.querySelector('.article-date')?.textContent || ''
                 };
             });
+            this.totalPages = Math.ceil(this.articles.length / CONFIG.ARTICLES_PER_PAGE);
             this.updateDisplay();
         },
 
@@ -136,9 +141,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.currentPage++;
                 this.updateDisplay();
             });
+
+            this.prevBtn?.addEventListener('click', () => {
+                if (this.currentPage > 1) {
+                    this.currentPage--;
+                    this.updateDisplay('right', true);
+                }
+            });
+
+            this.nextBtn?.addEventListener('click', () => {
+                if (this.currentPage < this.totalPages) {
+                    this.currentPage++;
+                    this.updateDisplay('left', true);
+                }
+            });
         },
 
-        updateDisplay() {
+        updateDisplay(direction = null, shouldScroll = false) {
             if (!this.articlesGrid) return;
 
             const sortOrder = this.sortSelect?.value || 'newest';
@@ -152,28 +171,105 @@ document.addEventListener('DOMContentLoaded', () => {
                 return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
             });
 
-            // Update grid
-            this.articlesGrid.innerHTML = '';
-            sortedArticles.slice(startIndex, endIndex).forEach(article => {
-                const newArticle = article.element.cloneNode(true);
-                this.articlesGrid.appendChild(newArticle);
-            });
+            if (direction) {
+                // Create wrapper for smooth animation
+                const wrapper = document.createElement('div');
+                wrapper.style.position = 'relative';
+                wrapper.style.overflow = 'hidden';
+                wrapper.style.height = `${this.articlesGrid.offsetHeight}px`;
 
-            // Update counters and button
-            this.updateCounters(endIndex);
-            this.updateLoadMoreButton(endIndex);
+                // Prepare current and new content
+                const currentContent = this.articlesGrid.cloneNode(true);
+                const newContent = document.createElement('div');
+                newContent.className = 'articles-grid';
+                
+                sortedArticles.slice(startIndex, endIndex).forEach(article => {
+                    newContent.appendChild(article.element.cloneNode(true));
+                });
+
+                // Set initial positions
+                currentContent.style.position = 'absolute';
+                currentContent.style.width = '100%';
+                currentContent.style.top = '0';
+                currentContent.style.left = '0';
+                
+                newContent.style.position = 'absolute';
+                newContent.style.width = '100%';
+                newContent.style.top = '0';
+                newContent.style.left = direction === 'left' ? '100%' : '-100%';
+
+                // Add both contents to wrapper
+                wrapper.appendChild(currentContent);
+                wrapper.appendChild(newContent);
+
+                // Replace grid with wrapper
+                this.articlesGrid.replaceWith(wrapper);
+
+                // Trigger animation
+                requestAnimationFrame(() => {
+                    newContent.style.transition = 'transform 0.3s ease-out';
+                    currentContent.style.transition = 'transform 0.3s ease-out';
+                    
+                    newContent.style.transform = 'translateX(0)';
+                    currentContent.style.transform = `translateX(${direction === 'left' ? '-100%' : '100%'}%)`;
+
+                    // Clean up after animation
+                    setTimeout(() => {
+                        this.articlesGrid = newContent;
+                        wrapper.replaceWith(this.articlesGrid);
+                        this.articlesGrid.style.transform = '';
+                        this.articlesGrid.style.position = '';
+                        this.articlesGrid.style.width = '';
+                        this.articlesGrid.style.top = '';
+                        this.articlesGrid.style.left = '';
+                        
+                        if (shouldScroll) {
+                            const section = document.getElementById('articles');
+                            const yOffset = -80;
+                            const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                            window.scrollTo({ top: y, behavior: 'smooth' });
+                        }
+                    }, 300);
+                });
+            } else {
+                // Direct update without animation
+                this.articlesGrid.innerHTML = '';
+                sortedArticles.slice(startIndex, endIndex).forEach(article => {
+                    this.articlesGrid.appendChild(article.element.cloneNode(true));
+                });
+            }
+
+            // Update navigation state and counters
+            this.updateNavigationState(sortedArticles.length);
+            this.updateCounters(endIndex, sortedArticles.length);
         },
 
-        updateCounters(endIndex) {
+        updateNavigationState(totalArticles) {
+            this.totalPages = Math.ceil(totalArticles / CONFIG.ARTICLES_PER_PAGE);
+            
+            if (this.prevBtn) {
+                this.prevBtn.disabled = this.currentPage <= 1;
+            }
+            if (this.nextBtn) {
+                this.nextBtn.disabled = this.currentPage >= this.totalPages;
+            }
+            if (this.currentPageSpan) {
+                this.currentPageSpan.textContent = this.currentPage;
+            }
+            if (this.totalPagesSpan) {
+                this.totalPagesSpan.textContent = this.totalPages;
+            }
+        },
+
+        updateCounters(endIndex, totalArticles) {
             const showingCount = document.getElementById('showing-count');
             const totalCount = document.getElementById('total-count');
-            if (showingCount) showingCount.textContent = Math.min(endIndex, this.articles.length);
-            if (totalCount) totalCount.textContent = this.articles.length;
-        },
-
-        updateLoadMoreButton(endIndex) {
-            if (this.loadMoreBtn) {
-                this.loadMoreBtn.style.display = endIndex < this.articles.length ? 'block' : 'none';
+            
+            if (showingCount) {
+                showingCount.textContent = Math.min(endIndex, totalArticles);
+            }
+            if (totalCount) {
+                totalCount.textContent = totalArticles;
             }
         }
     };
@@ -289,9 +385,61 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // PDF Modal Manager
+    const PDFModalManager = {
+        init() {
+            this.modal = document.getElementById('presentationModal');
+            this.closeBtn = document.querySelector('.close-modal');
+            this.setupEventListeners();
+        },
+
+        setupEventListeners() {
+            // Close on X button click
+            this.closeBtn?.addEventListener('click', () => this.closeModal());
+
+            // Close on outside click
+            window.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.closeModal();
+                }
+            });
+
+            // Close on Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    this.closeModal();
+                }
+            });
+        },
+
+        openModal() {
+            if (this.modal) {
+                requestAnimationFrame(() => {
+                    this.modal.style.display = 'flex';
+                    requestAnimationFrame(() => {
+                        this.modal.classList.add('active');
+                    });
+                });
+            }
+        },
+
+        closeModal() {
+            if (this.modal) {
+                this.modal.classList.remove('active');
+                setTimeout(() => {
+                    this.modal.style.display = 'none';
+                }, 300); // Match the transition duration
+            }
+        }
+    };
+
     // Initialize all managers
     NavigationManager.init();
     ArticlesManager.init();
     TimelineManager.init();
     SectionManager.init();
+    PDFModalManager.init();
+
+    // Make the modal manager globally accessible
+    window.PDFModalManager = PDFModalManager;
 });

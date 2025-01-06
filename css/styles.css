@@ -526,7 +526,10 @@ h1, h2, h3, h4, h5, h6 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
-    transition: opacity 0.3s ease;
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    position: relative;
+    transform: translateX(0);
+    opacity: 1;
 }
 
 .articles-grid.loading {
@@ -1112,8 +1115,14 @@ h1, h2, h3, h4, h5, h6 {
     cursor: not-allowed;
 }
 
-.page-btn:hover:not(:disabled) {
+.page-btn:not(:disabled) {
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.page-btn:not(:disabled):hover {
     color: var(--secondary-color);
+    transform: scale(1.1);
 }
 
 .page-numbers {
@@ -1477,3 +1486,325 @@ footer {
         grid-template-columns: 1fr; /* Single column for very small devices */
     }
 }
+
+/* Project Card Styles */
+.project-card {
+    background: white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    cursor: default; /* Change cursor to default instead of pointer */
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.project-media {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
+
+.project-media::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.project-card:hover .project-media::after {
+    left: 100%;
+}
+
+.project-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-media video {
+    transform: scale(1.05);
+}
+
+.project-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(0, 0, 0, 0.2) 100%
+    );
+    pointer-events: none;
+}
+
+.project-content {
+    padding: 2rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.project-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.project-card:hover .project-title {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.project-description {
+    font-family: 'Poppins', sans-serif;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.project-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.skill-tag {
+    background: rgba(0, 65, 116, 0.1);
+    color: var(--primary-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+    font-family: 'Poppins', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.project-card:hover .skill-tag {
+    background: rgba(0, 65, 116, 0.2);
+    transform: scale(1.05);
+}
+
+.view-project-btn {
+    align-self: flex-start;
+    padding: 0.8rem 1.5rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative; /* Add this */
+    z-index: 1; /* Add this to ensure button stays clickable */
+}
+
+.view-project-btn:hover {
+    background: var(--secondary-color);
+    transform: translateX(5px);
+}
+
+.view-project-btn i {
+    transition: transform 0.3s ease;
+}
+
+.view-project-btn:hover i {
+    transform: translateX(3px);
+}
+
+.project-date {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+/* ...existing code... */
+
+.project-buttons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.view-presentation-btn {
+    padding: 0.8rem 1.5rem;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.view-presentation-btn:hover {
+    background: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.view-presentation-btn i {
+    transition: transform 0.3s ease;
+}
+
+.view-presentation-btn:hover i {
+    transform: translateX(3px);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1100;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.active {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    height: 90vh;
+    background: white;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.close-modal:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive adjustments for modal */
+@media screen and (max-width: 768px) {
+    .project-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .view-project-btn,
+    .view-presentation-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-content {
+        width: 95%;
+        height: 80vh;
+    }
+}
+
+/* ...existing code... */
+
+/* ...existing code... */
+
+.view-github-btn {
+    padding: 0.8rem 1.5rem;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.view-github-btn:hover {
+    background: #24292e;
+    transform: translateX(5px);
+}
+
+.view-github-btn i {
+    transition: transform 0.3s ease;
+}
+
+.view-github-btn:hover i {
+    transform: translateX(3px);
+}
+
+/* Update mobile styles */
+@media screen and (max-width: 768px) {
+    .project-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .view-project-btn,
+    .view-presentation-btn,
+    .view-github-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ...existing code... */
